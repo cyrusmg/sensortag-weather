@@ -12,13 +12,13 @@ const LIGHT_PREFIX = process.env.LIGHT_PREFIX || "http://localhost/?light=";
 
 const SEND_TEMPERATURE = process.env.SEND_TEMPERATURE === "true";
 const SEND_PRESSURE = process.env.SEND_PRESSURE === "true";
-const SEND_LIGHT = process.env.SEND_LIGHT             || true;
+const SEND_LIGHT = process.env.SEND_LIGHT == "true";
 
 const READ_TIMEOUT = 5*60*1000; // 5 minutes
 
 function sendTemperature(temperature, humidity) {
     let host = TEMPERATURE_PREFIX + temperature.toString().substr(0, 5) + "&humV=" + humidity.toString().substr(0, 5);
-    return http.get(host, function(response) { });
+    return http.get(host, (res) => {});
 }
 
 function adjustPressure(pressure, height_m) {
@@ -52,10 +52,10 @@ SensorTag.discoverAll(function (sensorTag) {
             
             function (callback)
             {
-              if (SEND_TEMPERATURE !== false) {
+              if (SEND_TEMPERATURE) {
                 console.log("Starting humidity sensor for %s...", sensorTag.id);
                 sensorTag.enableHumidity(callback);
-              }
+              } else { callback(); }
             },
             
             function (callback)
@@ -63,7 +63,7 @@ SensorTag.discoverAll(function (sensorTag) {
               if (SEND_PRESSURE) {
                 console.log("Starting pressure sensor for %s...", sensorTag.id);
                 sensorTag.enableBarometricPressure(callback);
-              }
+              } else { callback(); }
             },
             
             function (callback)
@@ -71,7 +71,7 @@ SensorTag.discoverAll(function (sensorTag) {
               if (SEND_LIGHT) {
                 console.log("Starting light intensity sensor for %s...", sensorTag.id);
                 sensorTag.enableLuxometer(callback);
-              }
+              } else { callback(); }
             }
         ], function () {
             setInterval(function () {
@@ -89,7 +89,7 @@ SensorTag.discoverAll(function (sensorTag) {
                 //     },
                     function (callback)
                     {
-                      if (SEND_TEMPERATURE == true) {
+                      if (SEND_TEMPERATURE) {
                         sensorTag.readHumidity(function (error, temperature, humidity)
                         {
                             readings.humidity = humidity;
