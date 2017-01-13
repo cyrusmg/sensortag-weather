@@ -1,0 +1,20 @@
+{
+  "name": "sensortag-weather",
+  "version": "0.0.0",
+  "main": "weather.js",
+  "scripts": {
+    "start": "sudo node weather.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.1.4",
+    "azure-iot-device": "^1.1.2",
+    "azure-iot-device-amqp": "^1.1.2",
+    "bluetooth-hci-socket": "^0.5.1",
+    "noble": "^1.7.0",
+    "sensortag": "^1.2.3"
+  },
+  "devDependencies": {},
+  "description": ""
+}
